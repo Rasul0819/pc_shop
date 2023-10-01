@@ -3,18 +3,31 @@
 <html>
 <head>
 <meta charset="utf-8" />
-<title>{% block title %}Мой магазин{% endblock %}</title>
+<title>{% block title %}Pc Shop{% endblock %}</title>
 <link href="{% static "css/base.css" %}" rel="stylesheet">
 </head>
 <body>
 <div id="header">
 <a href="/" class="logo">Pc Shop</a>
 </div>
+
 <div id="subheader">
-<div class="cart">Korzina</div>
+    <div class="cart">
+        {% with total_items=cart|length %}
+        {% if cart|length > 0 %}
+        Korzinkada:
+        <a href="{% url 'cart:cart_detail' %}">
+            {{ total_items }} shtuk , ${{ cart.get_total_price }}
+        </a> 
+        {% else %}
+        korzinka bos
+        {% endif %}
+        {% endwith %}
+
+    </div>
 </div>
-<div id="content">
-{% block content %}{% endblock %}
-</div>
+    <div id="content">
+        {% block content %}{% endblock %}
+    </div>
 </body>
 </html>
