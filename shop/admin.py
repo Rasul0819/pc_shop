@@ -2,6 +2,12 @@ from django.contrib import admin
 from django.utils.safestring import mark_safe
 
 from .models import Category, Product
+from .models import CustomUser
+
+@admin.register(CustomUser)
+class CustomUserAdmin(admin.ModelAdmin):
+    list_display = ['username', 'first_name', 'last_name']
+    list_display_links = ['username', 'first_name', 'last_name']
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):

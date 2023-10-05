@@ -1,6 +1,18 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
 
+
+class CustomUser(models.Model):
+    username = models.OneToOneField(User, on_delete=models.PROTECT)
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    email = models.EmailField()
+    password1 = models.CharField(max_length=50)
+    password2 = models.CharField(max_length=50)
+
+    def __str__(self) -> str:
+        return f'{self.user} {self.first_name} {self.last_name}'
 
 class Category(models.Model):
     name = models.CharField(max_length=100, db_index=True)
