@@ -10,9 +10,13 @@ class CustomUser(models.Model):
     email = models.EmailField()
     password1 = models.CharField(max_length=50)
     password2 = models.CharField(max_length=50)
+    class Meta:
+        ordering = ('username',)
+        verbose_name = 'User'
+        verbose_name_plural = 'Userler'
 
     def __str__(self) -> str:
-        return f'{self.user} {self.first_name} {self.last_name}'
+        return f'{self.username} {self.first_name} {self.last_name}'
 
 class Category(models.Model):
     name = models.CharField(max_length=100, db_index=True)
