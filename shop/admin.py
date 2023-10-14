@@ -6,17 +6,17 @@ from .models import CustomUser
 
 @admin.register(CustomUser)
 class CustomUserAdmin(admin.ModelAdmin):
-    list_display = ['username', 'first_name', 'last_name']
-    list_display_links = ['username', 'first_name', 'last_name']
+    list_display = ['id', 'username', 'first_name', 'last_name']
+    list_display_links = ['id', 'username', 'first_name', 'last_name']
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ['name', 'slug']
+    list_display = ['id', 'name', 'slug']
     prepopulated_fields = {'slug': ('name',)}
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name', 'slug', 'image_show', 'price', 'available', 'created', 'uploaded']
+    list_display = ['id', 'name', 'slug', 'image_show', 'price', 'available', 'created', 'uploaded']
     list_filter = ['available', 'created', 'uploaded']
     list_editable = ['price', 'available']
     prepopulated_fields = {'slug': ('name', )}
