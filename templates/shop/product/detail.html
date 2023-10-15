@@ -16,9 +16,29 @@
     {{ cart_product_form }}
     {% csrf_token %}
     <input type="submit" value="Korzinkaga qosiw">
-
+    
 
 </form>
 {{ product.description|linebreaks }}
 </div>
+
+{% if product.ratings.all %}
+    <h3>Оценки товара</h3>
+    <ul>
+      {% for rating in product.ratings.all %}
+        <li>{{ rating.rating }} (от {{ rating.user.username }})</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>Пока нет оценок для этого товара.</p>
+  {% endif %}
+
+  <!-- Форма для оценки товара -->
+  <h3>Оценить товар</h3>
+  <form method="post" action="{% url 'rate_product' product.id %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Оценить</button>
+  </form>
 {% endblock %}
+

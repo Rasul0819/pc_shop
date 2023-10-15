@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h3>Оценить товар</h3>
+  <form method="post" action="{% url 'rate_product' product.id %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Оценить</button>
+  </form>
+{% endblock %}

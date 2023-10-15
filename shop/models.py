@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
-
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 class CustomUser(models.Model):
     username = models.OneToOneField(User, on_delete=models.PROTECT)
@@ -17,6 +17,9 @@ class CustomUser(models.Model):
 
     def __str__(self) -> str:
         return f'{self.username} {self.first_name} {self.last_name}'
+    
+    
+
 
 class Category(models.Model):
     name = models.CharField(max_length=100, db_index=True)
@@ -47,6 +50,8 @@ class Product(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     uploaded = models.DateTimeField(auto_now=True)
 
+    ratings = models.ManyToManyField(CustomUser, through='Rating', related_name='rated_products')
+
     class Meta:
         ordering = ('name',)
         verbose_name = 'Товар'
@@ -58,3 +63,13 @@ class Product(models.Model):
 
     def get_absolute_url(self):
         return reverse('shop:product_detail', args=[self.id, self.slug])
+
+
+class Rating(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    rated_product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    rating = models.IntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(5)],
+        blank=True,default=3,
+        )
+    created_at = models.DateTimeField(auto_now_add=True)
