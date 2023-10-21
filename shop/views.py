@@ -22,11 +22,33 @@ def product_list(request, category_slug=None):
                       'products': products
                   })
 
-
 def product_detail(request, id, slug):
     product = get_object_or_404(Product, id=id, slug=slug, available=True)
     cart_product_form = CartAddProductForm()
-    return render(request, 'shop/product/detail.html', {'product': product,'cart_product_form':cart_product_form })
+
+    if request.method == 'POST':
+        form = RatingForm(request.POST)
+        if form.is_valid():
+            rating = form.cleaned_data['rating']
+            user = request.user
+
+            # Создаем объект оценки
+            Rating.objects.create(user=user, product=product, rating=rating)
+
+            # Можно добавить дополнительные действия после создания оценки, например, перенаправление на страницу товара
+            return redirect('shop:product_detail', id=product.id, slug=product.slug)
+    else:
+        form = RatingForm()
+    context =  {
+        'product': product,
+        'cart_product_form': cart_product_form,
+        'form': form}
+
+    return render(request, 'shop/product/detail.html',context)
+# def product_detail(request, id, slug):
+#     product = get_object_or_404(Product, id=id, slug=slug, available=True)
+#     cart_product_form = CartAddProductForm()
+#     return render(request, 'shop/product/detail.html', {'product': product,'cart_product_form':cart_product_form })
 
 def loginuser(request,category_slug=None):
     if request.method == 'GET':
@@ -53,8 +75,8 @@ def loginuser(request,category_slug=None):
 
 
 
-def rate_product(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
+def rate_product(request, id,slug):
+    product = get_object_or_404(Product, id=id,slug=slug)
 
     if request.method == 'POST':
         form = RatingForm(request.POST)

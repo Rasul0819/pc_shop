@@ -6,7 +6,7 @@
 {% block content %}
 <div class="product-detail">
 <img src="{% if product.image %}{{ product.image.url }}{% else %}
-{% static "img/no_image.png" %}{% endif %}">
+{% static "img/no_image.png" %}{% endif %}>
 <h1>{{ product.name }}</h1>
 <h2>
 <a href="{{ product.category.get_absolute_url }}">{{product.category }}</a>
@@ -35,10 +35,10 @@
 
   <!-- Форма для оценки товара -->
   <h3>Оценить товар</h3>
-  <form method="post" action="{% url 'rate_product' product.id %}">
+<form method="post" action="{% url 'shop:rate_product' product.id product.slug %}">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Оценить</button>
-  </form>
+</form>
 {% endblock %}
 
